@@ -27,6 +27,9 @@ A RESTful API to manage devices using Java 21, Spring Boot, PostgreSQL, and Dock
 - Docker & Docker Compose
 
 ---
+## 🐳 How to Run 
+./mvnw clean package
+
 
 ## 🐳 How to Run with Docker
 
