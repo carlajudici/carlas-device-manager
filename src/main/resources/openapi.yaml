@@ -1,0 +1,98 @@
+openapi: 3.0.3
+info:
+  title: Device Manager API
+  version: 1.0.0
+  description: API to manage devices
+
+servers:
+  - url: http://localhost:8080
+
+paths:
+  /devices:
+    get:
+      summary: Get all devices
+      responses:
+        '200':
+          description: List of devices
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeviceResponse'
+    post:
+      summary: Create a device
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceRequest'
+      responses:
+        '201':
+          description: Device created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceResponse'
+
+  /devices/{id}:
+    get:
+      summary: Get device by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Device found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceResponse'
+        '404':
+          description: Device not found
+    delete:
+      summary: Delete a device
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Device deleted
+        '400':
+          description: Cannot delete device in use
+
+components:
+  schemas:
+    DeviceRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        brand:
+          type: string
+        state:
+          type: string
+          enum: [AVAILABLE, IN_USE, INACTIVE]
+      required: [name, brand, state]
+
+    DeviceResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        brand:
+          type: string
+        state:
+          type: string
+        creationTime:
+          type: string
+          format: date-time
